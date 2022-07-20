@@ -1,0 +1,6 @@
+---
+- name: playbook name
+  hosts: target
+  tasks:
+  - name: task1 name
+    

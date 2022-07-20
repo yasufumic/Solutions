@@ -1,0 +1,44 @@
+---
+- name: Building a web server
+  hosts: target
+  vars:
+    ansible_become: yes
+  #vars_files: vars/wwwvars.yml
+  tasks:
+  - name: Setting variables from a file
+    include_vars:
+      vars/wwwvars.yml
+  - name: "Installing {{ webpkg }}"
+    yum:
+      name: "{{ webpkg }}"
+      state: installed
+  - name: "Installing {{ fwpkg }}"
+    yum:
+      name: "{{ fwpkg }}"
+      state: installed
+  - name: "Installing {{ fwsvc }}"
+    service:
+      name: "{{ fwsvc }}"
+      state: started
+      enabled: True
+  - name: "Open {{ proto }} port"
+    firewalld:
+      service: "{{ proto }}"
+      state: enabled
+      permanent: true
+      immediate: true
+  - name: "Starting {{ websvc }}"
+    service:
+      name: "{{ websvc }}"
+      state: started
+      enabled: True
+  - name: Installing index.html file
+    template:
+      src: index.html.j2
+      dest: /var/www/html/index.html
+    notify: restart httpd
+  handlers:
+  - name: restart httpd
+    service:
+      name: httpd
+      state: restarted

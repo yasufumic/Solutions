@@ -1,0 +1,5 @@
+webpkg: httpd
+fwpkg: firewalld
+websvc: httpd
+fwsvc: firewalld
+proto: http

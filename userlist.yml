@@ -1,0 +1,6 @@
+---
+newusers:
+  - name: taro
+    pw: ansible
+  - name: hanako
+    pw: ansible
